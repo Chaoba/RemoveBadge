@@ -1,0 +1,7 @@
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+           android:id="@+id/remove_img"
+           android:layout_width="60dp"
+           android:layout_height="60dp"
+           android:src="@mipmap/ic_launcher">
+
+</ImageView>

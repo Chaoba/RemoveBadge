@@ -8,7 +8,10 @@ class ShowBadgeReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (Actions.ACTION_SUMSUNG == intent.action) {
-            RemoveBadgeService.startRemoveSamSung(context, intent)
+            val number = intent.getIntExtra("badge_count", 0)
+            if (number > 0) {
+                RemoveBadgeService.startRemoveSamSung(context, intent)
+            }
         }
     }
 }

@@ -5,4 +5,6 @@ package com.mushuichuan.removebadge
  */
 object Actions {
     var ACTION_SUMSUNG = "android.intent.action.BADGE_COUNT_UPDATE"
+    var ACTION_SUMSUNG_ALL = "com.mushuichuan.removebadge.SUMSUNG_ALL"
+    var ACTION_WIDGET = "com.mushuichuan.removebadge.widget"
 }

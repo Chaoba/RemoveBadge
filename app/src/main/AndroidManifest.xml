@@ -32,6 +32,16 @@
                 <action android:name="android.intent.action.BADGE_COUNT_UPDATE"/>
             </intent-filter>
         </receiver>
+        <receiver android:name=".RemoveBadgeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.mushuichuan.removebadge.widget"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/remove_badge_widget_info"/>
+        </receiver>
     </application>
 
 </manifest>
