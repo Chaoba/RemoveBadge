@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">Remove Badge</string>
+    <string name="app_name">Remove Badges</string>
     <string name="action_settings">Settings</string>
     <string name="appwidget_text">clean</string>
     <string name="add_widget">Add widget</string>
+    <string name="add_this_app">Add badges to this App</string>
+    <string name="sumsung_add_all">Add 100 badges to all App</string>
 </resources>

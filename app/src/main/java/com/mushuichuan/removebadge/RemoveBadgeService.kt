@@ -24,13 +24,13 @@ class RemoveBadgeService : IntentService("RemoveBadgeService") {
 
     private fun handleActionSamSungAll() {
         Log.d(TAG, "handleActionSamSungAll")
-        Util.sendToSamSumgAll(applicationContext, 0)
+        Util.sendToSamSumgAll(applicationContext, 0, false)
     }
 
     private fun handleActionSamsung(intent: Intent) {
         val packageName = intent.getStringExtra("badge_count_package_name")
         val className = intent.getStringExtra("badge_count_class_name")
-        Util.sendToSamSumg(application, packageName, className, 0)
+        Util.sendToSamSumg(application, packageName, className, 0, false)
     }
 
     companion object {
