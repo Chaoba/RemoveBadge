@@ -50,17 +50,22 @@ object Util {
         val contentResolver = context.contentResolver
         val c: Cursor? = contentResolver.query(uri, null, null, null, null) ?: return
         try {
+            var where = "package in ("
             while (c!!.moveToNext()) {
                 val pkg = c.getString(1)
                 val clazz = c.getString(2)
                 val badgeCount = c.getInt(3)
                 Log.d(TAG, "package: $pkg, class: $clazz, badgeCount: $badgeCount")
-                Log.d(TAG, "update package: $pkg to $number")
-                val cv = ContentValues()
-                cv.put("badgeCount", number)
-                contentResolver.update(Uri.parse("content://com.sec.badge/apps"), cv, "package=?", arrayOf(pkg))
+                where += "'$pkg',"
             }
+            where += "' ')"
+            Log.d(TAG, "update $where to number:　$number")
+            val cv = ContentValues()
+            cv.put("badgeCount", number)
+
+            contentResolver.update(Uri.parse("content://com.sec.badge/apps"), cv, where, null)
         } catch (e: Exception) {
+            Log.e(TAG, e.toString())
             c!!.close()
         }
     }
