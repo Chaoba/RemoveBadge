@@ -1,8 +1,11 @@
 package com.mushuichuan.removebadge
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.util.Log
 
 /**
@@ -16,15 +19,18 @@ object Util {
         Log.d(TAG, "packageName:$packageName")
         Log.d(TAG, "className:$className")
         Log.d(TAG, "number:$number")
-        val localIntent = Intent(Actions.ACTION_SUMSUNG)
-        localIntent.putExtra("badge_count", number)
-        localIntent.putExtra("badge_count_package_name", packageName)
-        localIntent.putExtra("badge_count_class_name", className)
-        localIntent.putExtra("isTest", test)
-        context.sendBroadcast(localIntent)
+        val badgeIntent = Intent(Actions.ACTION_SUMSUNG)
+        badgeIntent.putExtra("badge_count", number)
+        badgeIntent.putExtra("badge_count_package_name", packageName)
+        badgeIntent.putExtra("badge_count_class_name", className)
+        badgeIntent.putExtra("isTest", test)
+        context.sendBroadcast(badgeIntent)
     }
 
-    fun sendToSamSumgAll(context: Context, number: Int, test: Boolean) {
+    /**
+     * send broadcast to all apps, not recommend because it is low efficiency
+     */
+    fun sendToSamSungAllBroadCast(context: Context, number: Int, test: Boolean) {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         val list = context.packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
@@ -34,5 +40,28 @@ object Util {
             sendToSamSumg(context, packageName, activityName, number, test)
         }
 
+    }
+
+    /**
+     * directly change the value in ContentProvider
+     */
+    fun sendToSamSungAllContentResolver(context: Context, number: Int) {
+        val uri = Uri.parse("content://com.sec.badge/apps")
+        val contentResolver = context.contentResolver
+        val c: Cursor? = contentResolver.query(uri, null, null, null, null) ?: return
+        try {
+            while (c!!.moveToNext()) {
+                val pkg = c.getString(1)
+                val clazz = c.getString(2)
+                val badgeCount = c.getInt(3)
+                Log.d(TAG, "package: $pkg, class: $clazz, badgeCount: $badgeCount")
+                Log.d(TAG, "update package: $pkg to $number")
+                val cv = ContentValues()
+                cv.put("badgeCount", number)
+                contentResolver.update(Uri.parse("content://com.sec.badge/apps"), cv, "package=?", arrayOf(pkg))
+            }
+        } catch (e: Exception) {
+            c!!.close()
+        }
     }
 }

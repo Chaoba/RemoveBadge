@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar?
         setSupportActionBar(toolbar)
         findViewById(R.id.samsung)!!.setOnClickListener { Util.sendToSamSumg(this@MainActivity, packageName, this@MainActivity.componentName.className, 3, true) }
-        findViewById(R.id.samsung_add_all)!!.setOnClickListener { Util.sendToSamSumgAll(this@MainActivity, 100, true) }
+        findViewById(R.id.samsung_add_all)!!.setOnClickListener { Util.sendToSamSungAllContentResolver(this@MainActivity, 100) }
     }
 
 }

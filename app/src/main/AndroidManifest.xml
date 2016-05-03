@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.mushuichuan.removebadge"
           xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,9 +29,9 @@
             android:name=".ShowBadgeReceiver"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BADGE_COUNT_UPDATE"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.BADGE_COUNT_UPDATE"/>-->
+            <!--</intent-filter>-->
         </receiver>
         <receiver android:name=".RemoveBadgeWidget">
             <intent-filter>

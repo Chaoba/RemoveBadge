@@ -24,7 +24,7 @@ class RemoveBadgeService : IntentService("RemoveBadgeService") {
 
     private fun handleActionSamSungAll() {
         Log.d(TAG, "handleActionSamSungAll")
-        Util.sendToSamSumgAll(applicationContext, 0, false)
+        Util.sendToSamSungAllContentResolver(applicationContext, 0)
     }
 
     private fun handleActionSamsung(intent: Intent) {
