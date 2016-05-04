@@ -88,12 +88,7 @@ object Util {
 
     fun sendToHtc(context: Context, packageName: String, className: String, number: Int) {
         Log.d(TAG, "sendToHtc $packageName,number:$number")
-        val intent = Intent(Actions.ACTION_HTC);
-        intent.putExtra("packagename", packageName);
-        intent.putExtra("count", number);
-        context.sendBroadcast(intent);
-
-        val setNotificationIntent = Intent("com.htc.launcher.action.SET_NOTIFICATION");
+        val setNotificationIntent = Intent(Actions.ACTION_HTC);
         val localComponentName = ComponentName(packageName, className);
         setNotificationIntent.putExtra("com.htc.launcher.extra.COMPONENT", localComponentName.flattenToShortString());
         setNotificationIntent.putExtra("com.htc.launcher.extra.COUNT", number);

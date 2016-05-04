@@ -9,6 +9,6 @@ object Actions {
 
     val ACTION_SUMSUNG = "android.intent.action.BADGE_COUNT_UPDATE"
     val ACTION_SONY = "com.sonyericsson.home.action.UPDATE_BADGE"
-    val ACTION_HTC = "com.htc.launcher.action.UPDATE_SHORTCUT"
+    val ACTION_HTC = "com.htc.launcher.action.SET_NOTIFICATION"
 
 }
