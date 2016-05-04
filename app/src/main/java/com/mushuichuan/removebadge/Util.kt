@@ -1,5 +1,6 @@
 package com.mushuichuan.removebadge
 
+import android.content.ComponentName
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,22 @@ import android.util.Log
 object Util {
 
     private val TAG = "Util"
+
+    fun sendToOneApp(context: Context, packageName: String, className: String, number: Int) {
+        when (PhoneTypeManager.PHONE_TYPE) {
+            PhoneTypeManager.TYPE_SUMSUNG -> sendToSamSumg(context, packageName, className, number)
+            PhoneTypeManager.TYPE_HTC -> sendToHtc(context, packageName, className, number)
+            PhoneTypeManager.TYPE_SONY -> sendToSony(context, packageName, className, number)
+        }
+    }
+
+    fun sendToAll(context: Context, number: Int) {
+        when (PhoneTypeManager.PHONE_TYPE) {
+            PhoneTypeManager.TYPE_SUMSUNG -> sendToSamSungAllContentResolver(context, number)
+            PhoneTypeManager.TYPE_HTC -> sendToHtcAll(context, number)
+            PhoneTypeManager.TYPE_SONY -> sendToSonyAll(context, number)
+        }
+    }
 
     fun sendToSamSumg(context: Context, packageName: String, className: String, number: Int) {
         Log.d(TAG, "packageName:$packageName")
@@ -67,5 +84,52 @@ object Util {
             Log.e(TAG, e.toString())
             c!!.close()
         }
+    }
+
+    fun sendToHtc(context: Context, packageName: String, className: String, number: Int) {
+        Log.d(TAG, "sendToHtc $packageName,number:$number")
+        val intent = Intent(Actions.ACTION_HTC);
+        intent.putExtra("packagename", packageName);
+        intent.putExtra("count", number);
+        context.sendBroadcast(intent);
+
+        val setNotificationIntent = Intent("com.htc.launcher.action.SET_NOTIFICATION");
+        val localComponentName = ComponentName(packageName, className);
+        setNotificationIntent.putExtra("com.htc.launcher.extra.COMPONENT", localComponentName.flattenToShortString());
+        setNotificationIntent.putExtra("com.htc.launcher.extra.COUNT", number);
+        context.sendBroadcast(setNotificationIntent);
+    }
+
+    fun sendToHtcAll(context: Context, number: Int) {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        val list = context.packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
+        for (resolveInfo in list) {
+            val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+            val activityName = resolveInfo.activityInfo.name
+            sendToHtc(context, packageName, activityName, number)
+        }
+    }
+
+    fun sendToSony(context: Context, packageName: String, className: String, number: Int) {
+        Log.d(TAG, "sendToSony $packageName")
+        val intent = Intent(Actions.ACTION_SONY);
+        intent.putExtra("com.sonyericsson.home.intent.extra.badge.ACTIVITY_NAME", className);
+        intent.putExtra("com.sonyericsson.home.intent.extra.badge.SHOW_MESSAGE", number != 0);
+        intent.putExtra("com.sonyericsson.home.intent.extra.badge.MESSAGE", number.toString());
+        intent.putExtra("com.sonyericsson.home.intent.extra.badge.PACKAGE_NAME", packageName);
+        context.sendBroadcast(intent);
+    }
+
+    fun sendToSonyAll(context: Context, number: Int) {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        val list = context.packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
+        for (resolveInfo in list) {
+            val activityName = resolveInfo.activityInfo.name
+            val packageName = resolveInfo.activityInfo.applicationInfo.packageName
+            sendToSony(context, packageName, activityName, number)
+        }
+
     }
 }

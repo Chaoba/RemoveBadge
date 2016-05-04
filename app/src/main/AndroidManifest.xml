@@ -38,6 +38,8 @@
             android:exported="true">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.BADGE_COUNT_UPDATE"/>-->
+                <!--<action android:name="com.sonyericsson.home.action.UPDATE_BADGE"/>-->
+                <!--<action android:name="com.htc.launcher.action.UPDATE_SHORTCUT"/>-->
             <!--</intent-filter>-->
         </receiver>
         <receiver android:name=".RemoveBadgeWidget">
