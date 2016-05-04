@@ -17,7 +17,7 @@ class RemoveBadgeWidget : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG,"onReceive:${intent.action}")
         if (intent.action.equals(Actions.ACTION_WIDGET)) {
-            RemoveBadgeService.startRemoveSamSungAll(context)
+            RemoveBadgeService.startRemoveAll(context)
         }
         super.onReceive(context, intent);
     }

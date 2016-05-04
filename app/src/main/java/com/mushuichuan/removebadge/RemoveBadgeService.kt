@@ -16,8 +16,8 @@ class RemoveBadgeService : IntentService("RemoveBadgeService") {
             val action = intent.action
             Log.d(TAG, "Handle action:" + action)
             when (action) {
-                Actions.ACTION_SUMSUNG -> handleActionSamsung(intent)
-                Actions.ACTION_SUMSUNG_ALL -> handleActionSamSungAll()
+                Actions.ACTION_SUMSUNG -> handleActionSamSung(intent)
+                Actions.ACTION_REMOVE_ALL -> handleActionSamSungAll()
             }
         }
     }
@@ -27,25 +27,26 @@ class RemoveBadgeService : IntentService("RemoveBadgeService") {
         Util.sendToSamSungAllContentResolver(applicationContext, 0)
     }
 
-    private fun handleActionSamsung(intent: Intent) {
-        val packageName = intent.getStringExtra("badge_count_package_name")
-        val className = intent.getStringExtra("badge_count_class_name")
-        Util.sendToSamSumg(application, packageName, className, 0, false)
+    private fun handleActionSamSung(intent: Intent) {
+        val number = intent.getIntExtra("badge_count", 0)
+        if (number > 0) {
+            val packageName = intent.getStringExtra("badge_count_package_name")
+            val className = intent.getStringExtra("badge_count_class_name")
+            Util.sendToSamSumg(application, packageName, className, 0)
+        }
     }
 
     companion object {
         private val TAG = "RemoveBadgeService"
 
-        fun startRemoveSamSung(context: Context, i: Intent) {
-            val intent = Intent(context, RemoveBadgeService::class.java)
-            intent.action = Actions.ACTION_SUMSUNG
-            intent.putExtras(i)
-            context.startService(intent)
+        fun startRemoveOneApp(context: Context, i: Intent) {
+            i.setClass(context, RemoveBadgeService::class.java)
+            context.startService(i)
         }
 
-        fun startRemoveSamSungAll(context: Context) {
+        fun startRemoveAll(context: Context) {
             val intent = Intent(context, RemoveBadgeService::class.java)
-            intent.action = Actions.ACTION_SUMSUNG_ALL
+            intent.action = Actions.ACTION_REMOVE_ALL
             context.startService(intent)
         }
     }

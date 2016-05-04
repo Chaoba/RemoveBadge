@@ -15,7 +15,7 @@ object Util {
 
     private val TAG = "Util"
 
-    fun sendToSamSumg(context: Context, packageName: String, className: String, number: Int, test: Boolean) {
+    fun sendToSamSumg(context: Context, packageName: String, className: String, number: Int) {
         Log.d(TAG, "packageName:$packageName")
         Log.d(TAG, "className:$className")
         Log.d(TAG, "number:$number")
@@ -23,21 +23,20 @@ object Util {
         badgeIntent.putExtra("badge_count", number)
         badgeIntent.putExtra("badge_count_package_name", packageName)
         badgeIntent.putExtra("badge_count_class_name", className)
-        badgeIntent.putExtra("isTest", test)
         context.sendBroadcast(badgeIntent)
     }
 
     /**
      * send broadcast to all apps, not recommend because it is low efficiency
      */
-    fun sendToSamSungAllBroadCast(context: Context, number: Int, test: Boolean) {
+    fun sendToSamSungAllBroadCast(context: Context, number: Int) {
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         val list = context.packageManager.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
         for (resolveInfo in list) {
             val activityName = resolveInfo.activityInfo.name
             val packageName = resolveInfo.activityInfo.applicationInfo.packageName
-            sendToSamSumg(context, packageName, activityName, number, test)
+            sendToSamSumg(context, packageName, activityName, number)
         }
 
     }
